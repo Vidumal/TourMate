@@ -20,7 +20,7 @@ It provides travelers with an easy way to explore destinations, view packages, b
 
 - **Frontend**: HTML5, CSS3, JavaScript  
 - **Backend**: Java (JSP/Servlets or Spring Boot)  
-- **Database**: MySQL  
+- **Database**: SSMS 
 - **Server**: Apache Tomcat  
 
 ---
