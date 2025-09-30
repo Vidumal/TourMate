@@ -12,7 +12,6 @@ It provides travelers with an easy way to explore destinations, view packages, b
 - 👤 **User Authentication & Profiles** – Secure login and personalized accounts.  
 - 🛠️ **Admin Panel** – Manage destinations, bookings, and users.  
 - 📧 **Contact & Inquiry Handling** – Built-in communication system.  
-- 💳 **Future Scope** – Online payment integration and advanced analytics.  
 
 ---
 
