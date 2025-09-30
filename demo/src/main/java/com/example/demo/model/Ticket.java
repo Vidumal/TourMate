@@ -1,4 +1,4 @@
 package com.example.demo.model;
 
-public class Ticket {ujrfhtg
+public class Ticket {
 }
