@@ -11,10 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-/**
- * Service class that handles all ticket-related business logic.
- * Provides methods for CRUD operations, filtering, statistics, and reply management.
- */
+
 @Service
 public class TicketService {
 
@@ -23,9 +20,7 @@ public class TicketService {
 
     // ================ CREATE OPERATIONS ================
 
-    /**
-     * Create a new ticket with automatic timestamp
-     */
+
     public Ticket createTicket(Ticket ticket) {
         if (ticket.getCreatedAt() == null) {
             ticket.setCreatedAt(LocalDateTime.now());
@@ -36,9 +31,7 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    /**
-     * Save or update a ticket with updated timestamp
-     */
+
     public Ticket saveTicket(Ticket ticket) {
         ticket.setUpdatedAt(LocalDateTime.now());
         return ticketRepository.save(ticket);
@@ -46,68 +39,46 @@ public class TicketService {
 
     // ================ READ OPERATIONS ================
 
-    /**
-     * Get all tickets ordered by creation date (newest first)
-     */
+
     public List<Ticket> getAllTickets() {
         return ticketRepository.findAllByOrderByCreatedAtDesc();
     }
 
-    /**
-     * Get ticket by ID
-     */
+
     public Optional<Ticket> getTicketById(Long id) {
         return ticketRepository.findById(id);
     }
 
-    /**
-     * Get all tickets for a specific agency
-     */
     public List<Ticket> getTicketsByAgency(Long agencyId) {
         return ticketRepository.findByAgencyIdOrderByCreatedAtDesc(agencyId);
     }
 
-    /**
-     * Get all tickets for a specific user
-     */
+
     public List<Ticket> getTicketsByUser(Long userId) {
         return ticketRepository.findByUserIdOrderByCreatedAtDesc(userId);
     }
 
-    /**
-     * Get tickets by status (OPEN, IN_PROGRESS, SOLVED, CLOSED)
-     */
+
     public List<Ticket> getTicketsByStatus(String status) {
         return ticketRepository.findByStatusOrderByCreatedAtDesc(status);
     }
 
-    /**
-     * Get tickets by priority (URGENT, HIGH, MEDIUM, LOW)
-     */
     public List<Ticket> getTicketsByPriority(String priority) {
         return ticketRepository.findByPriorityOrderByCreatedAtDesc(priority);
     }
 
-    /**
-     * Get user's tickets by status
-     */
+
     public List<Ticket> getTicketsByUserAndStatus(Long userId, String status) {
         return ticketRepository.findByUserIdAndStatusOrderByCreatedAtDesc(userId, status);
     }
 
-    /**
-     * Get tickets created in the last X days for a user
-     */
+
     public List<Ticket> getTicketsByUserInLastDays(Long userId, int days) {
         LocalDateTime fromDate = LocalDateTime.now().minusDays(days);
         return ticketRepository.findUserTicketsCreatedAfter(userId, fromDate);
     }
 
-    // ================ SEARCH & FILTER ================
 
-    /**
-     * Search tickets by keyword in subject or description
-     */
     public List<Ticket> searchTickets(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return getAllTickets();
@@ -115,10 +86,7 @@ public class TicketService {
         return ticketRepository.searchByKeyword(keyword);
     }
 
-    /**
-     * Get all tickets with filters (search, status, priority)
-     * Main method used by admin and agency ticket pages
-     */
+
     public List<Ticket> getAllTicketsWithFilters(String search, String status, String priority) {
         try {
             // Try using repository query first (more efficient)
@@ -130,9 +98,7 @@ public class TicketService {
         }
     }
 
-    /**
-     * Manual filtering fallback method
-     */
+
     private List<Ticket> getAllTicketsManualFilter(String search, String status, String priority) {
         List<Ticket> tickets = getAllTickets();
 
@@ -167,11 +133,8 @@ public class TicketService {
         return tickets;
     }
 
-    // ================ UPDATE OPERATIONS ================
 
-    /**
-     * Update ticket details (subject, description, priority)
-     */
+
     public Ticket updateTicket(Long ticketId, String subject, String description, String priority) {
         Optional<Ticket> ticketOpt = ticketRepository.findById(ticketId);
         if (ticketOpt.isPresent()) {
@@ -185,9 +148,7 @@ public class TicketService {
         throw new RuntimeException("Ticket not found with ID: " + ticketId);
     }
 
-    /**
-     * Update ticket status
-     */
+
     public void updateTicketStatus(Long ticketId, String status) {
         Optional<Ticket> ticketOpt = ticketRepository.findById(ticketId);
         if (ticketOpt.isEmpty()) {
@@ -200,18 +161,12 @@ public class TicketService {
         ticketRepository.save(ticket);
     }
 
-    /**
-     * Update ticket status (alternative method)
-     */
+
     public void updateStatus(Long ticketId, String status) {
         updateTicketStatus(ticketId, status);
     }
 
-    // ================ DELETE OPERATIONS ================
 
-    /**
-     * Delete a ticket by ID
-     */
     public boolean deleteTicket(Long ticketId) {
         try {
             if (ticketRepository.existsById(ticketId)) {
@@ -225,9 +180,7 @@ public class TicketService {
         }
     }
 
-    /**
-     * Delete all tickets by user ID
-     */
+
     public boolean deleteTicketsByUser(Long userId) {
         try {
             ticketRepository.deleteByUserId(userId);
@@ -238,23 +191,16 @@ public class TicketService {
         }
     }
 
-    // ================ STATISTICS OPERATIONS ================
-
-    /**
-     * Count total tickets
-     */
     public long getTotalTicketsCount() {
         return ticketRepository.count();
     }
 
-    /**
-     * Count tickets by user
-     */
+
     public long countTicketsByUser(Long userId) {
         return ticketRepository.countByUserId(userId);
     }
 
-  
+
     public long countTicketsByStatus(String status) {
         return ticketRepository.countByStatus(status);
     }
