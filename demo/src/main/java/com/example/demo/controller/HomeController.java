@@ -26,5 +26,20 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class HomeController {
-    
+
+    // Automatically inject service classes to interact with database
+    @Autowired
+    private PaymentService paymentService; // Handles payment operations
+
+    @Autowired
+    private UserService userService; // Handles user operations
+
+    @Autowired
+    private PackageService packageService; // Handles package operations
+
+    @Autowired
+    private TravelPackageService travelPackageService; // Handles travel package CRUD
+
+/**
+
 }
