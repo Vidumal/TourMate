@@ -23,3 +23,8 @@ import jakarta.servlet.http.HttpServletRequest;
  * Main controller that handles public pages and authentication.
  * This includes home page, login, registration, contact, and package browsing.
  */
+
+@Controller
+public class HomeController {
+    
+}
