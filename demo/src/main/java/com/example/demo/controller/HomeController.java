@@ -16,3 +16,10 @@ import org.springframework.ui.Model;
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+
+
+/**
+ * Main controller that handles public pages and authentication.
+ * This includes home page, login, registration, contact, and package browsing.
+ */
