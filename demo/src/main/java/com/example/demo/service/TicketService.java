@@ -254,63 +254,43 @@ public class TicketService {
         return ticketRepository.countByUserId(userId);
     }
 
-    /**
-     * Count tickets by status
-     */
+  
     public long countTicketsByStatus(String status) {
         return ticketRepository.countByStatus(status);
     }
 
-    /**
-     * Count tickets by priority
-     */
+
     public long countTicketsByPriority(String priority) {
         return ticketRepository.countByPriority(priority);
     }
 
-    /**
-     * Count open tickets by user
-     */
     public long countOpenTicketsByUser(Long userId) {
         return ticketRepository.countByUserIdAndStatus(userId, "OPEN");
     }
 
-    /**
-     * Count open tickets
-     */
     public long getOpenTicketsCount() {
         return countTicketsByStatus("OPEN");
     }
 
-    /**
-     * Count solved tickets
-     */
+
     public long getSolvedTicketsCount() {
         return countTicketsByStatus("SOLVED");
     }
 
-    /**
-     * Count closed tickets
-     */
+
     public long getClosedTicketsCount() {
         return countTicketsByStatus("CLOSED");
     }
 
     // ================ NOTIFICATION SYSTEM ================
 
-    /**
-     * Get count of tickets created in the last X minutes
-     * Used for dashboard notifications
-     */
+
     public long getNewTicketsCount(int minutes) {
         LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(minutes);
         return ticketRepository.countByCreatedAtAfter(cutoffTime);
     }
 
-    /**
-     * Get list of tickets created in the last X minutes
-     * Used for showing recent tickets in notifications
-     */
+
     public List<Ticket> getRecentTickets(int minutes) {
         LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(minutes);
         return ticketRepository.findByCreatedAtAfterOrderByCreatedAtDesc(cutoffTime);
@@ -318,9 +298,6 @@ public class TicketService {
 
     // ================ REPLY MANAGEMENT ================
 
-    /**
-     * Add reply to ticket (generic method for both admin and agency)
-     */
     public void replyToTicket(Long ticketId, String reply, String repliedBy) {
         Optional<Ticket> ticketOpt = ticketRepository.findById(ticketId);
         if (ticketOpt.isEmpty()) {
@@ -347,61 +324,41 @@ public class TicketService {
         ticketRepository.save(ticket);
     }
 
-    /**
-     * Add admin reply to ticket
-     */
+
     public void addAdminReply(Long ticketId, String reply) {
         replyToTicket(ticketId, reply, "ADMIN");
     }
 
-    /**
-     * Add agency reply to ticket
-     */
+
     public void addAgencyReply(Long ticketId, String reply) {
         replyToTicket(ticketId, reply, "AGENCY");
     }
 
-    /**
-     * Generic method to add reply (used by controller)
-     */
+
     public void addReply(Long ticketId, String reply, String userType, String userName) {
         replyToTicket(ticketId, reply, userType);
     }
 
-    /**
-     * Check if ticket has been replied to
-     */
+
     public boolean hasReply(Ticket ticket) {
         return (ticket.getAdminReply() != null && !ticket.getAdminReply().trim().isEmpty()) ||
                 (ticket.getAgencyReply() != null && !ticket.getAgencyReply().trim().isEmpty());
     }
 
-    /**
-     * Get tickets with admin reply
-     */
+
     public List<Ticket> getTicketsWithAdminReply() {
         return ticketRepository.findTicketsWithAdminReply();
     }
 
-    /**
-     * Get tickets with agency reply
-     */
+
     public List<Ticket> getTicketsWithAgencyReply() {
         return ticketRepository.findTicketsWithAgencyReply();
     }
 
-    /**
-     * Get tickets without any reply (unanswered)
-     */
     public List<Ticket> getUnansweredTickets() {
         return ticketRepository.findTicketsWithoutReply();
     }
 
-    // ================ STATUS MANAGEMENT ================
-
-    /**
-     * Mark ticket as resolved
-     */
     public void markAsResolved(Long ticketId) {
         updateTicketStatus(ticketId, "SOLVED");
     }
